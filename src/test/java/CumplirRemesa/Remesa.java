@@ -10,6 +10,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.opencsv.CSVReader;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.openqa.selenium.devtools.CdpVersionFinder;
 
 
 public class Remesa {
@@ -36,6 +38,7 @@ public class Remesa {
     
 	@Before
 	public void setUp() {
+			
 		System.setProperty("webdriver.chrome.driver","./src/test/resources/chromedriver/chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
@@ -46,35 +49,41 @@ public class Remesa {
 
 
 
+	@SuppressWarnings("deprecation")
 	@Test
-	public void testAisPage () throws CsvValidationException, IOException {
+	public void testAisPage () throws CsvValidationException, IOException, InterruptedException {
 		
 				
 		if (driver.findElement(ministerioLocator).isDisplayed()) { 
 	 	
-			driver.findElement (usernameLocator).sendKeys("MIGUELW1@427");
-			driver.findElement (passwordLocator).sendKeys("RNDC2021MIGUELW2022");
+			driver.findElement (usernameLocator).sendKeys("GERENTE@4279");
+			driver.findElement (passwordLocator).sendKeys("Gerente4279");
+			
 			driver.findElement(By.id("dnn_ctr580_FormLogIn_btIngresar")).click();
+			//cumplir
 			driver.findElement(By.id("tddnn_dnnSOLPARTMENU_ctldnnSOLPARTMENU119")).click();
+			//cumplir remesa
 			driver.findElement(By.id("tddnn_dnnSOLPARTMENU_ctldnnSOLPARTMENU120")).click();
+			//cumplir manifiesto
+			/*driver.findElement(By.id("tddnn_dnnSOLPARTMENU_ctldnnSOLPARTMENU121")).click();*/
 			
 			CSVReader reader = new CSVReader (new FileReader("CSVdata\\Pendientes_Manifiesto.csv"));
 
 			// reading the data of the CSV file
 
 			StringBuffer buffer = new StringBuffer();
-			String data[];
+			String NroManifiesto[];
 
-			while ((data = reader.readNext()) !=null) {
+			while ((NroManifiesto = reader.readNext()) !=null) {
 
-			    for(int i=0 ; i<data.length ; i++){
-			         System.out.print(data[i] +" " ) ;
+			    for(int i=0 ; i<NroManifiesto.length ; i++){
+			         System.out.print(NroManifiesto[i] +" " ) ;
 				}
 			    
 			    System.out.println("");
 			
 
-			driver.findElement(By.id("dnn_ctr396_CumplirRemesa_CONSECUTIVOREMESA")).sendKeys(data);
+			driver.findElement(By.id("dnn_ctr396_CumplirRemesa_CONSECUTIVOREMESA")).sendKeys(NroManifiesto);
 			driver.findElement(By.id("dnn_ctr396_CumplirRemesa_CONSECUTIVOREMESA")).sendKeys(Keys.TAB);
 			driver.findElement(By.id("dnn_ctr396_CumplirRemesa_NOMTIPOCUMPLIDOREMESA")).click();
 			
@@ -127,6 +136,35 @@ public class Remesa {
 					
 			driver.findElement(By.id("dnn_ctr396_CumplirRemesa_btGuardar")).click();
 			driver.findElement(By.id("dnn_ctr396_CumplirRemesaNew_btNuevo")).click();
+			
+			driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS) ;
+			//MANIFIESTO
+
+			/*driver.findElement(By.id("dnn_ctr396_CumplirRemesaNew_btCumplirManifiesto")).click();
+			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_NUMMANIFIESTOCARGA")).sendKeys(NroManifiesto);
+			
+			
+			Select drpTipoCumplidoM = new Select(driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_NOMTIPOCUMPLIDOMANIFIESTO")));
+			drpTipoCumplidoM.selectByVisibleText("Cumplido Normal");
+			drpTipoCumplidoM.selectByIndex(1);
+			
+			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_NOMTIPOCUMPLIDOMANIFIESTO")).sendKeys(Keys.TAB);
+			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_VALORADICIONALHORASCARGUE")).sendKeys(Keys.TAB);
+			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_VALORADICIONALHORASDESCARGUE")).sendKeys(Keys.TAB);
+			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_VALORADICIONALFLETE")).sendKeys(Keys.TAB);
+			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_VALORDESCUENTOFLETE")).sendKeys(Keys.TAB);
+			
+			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_FECHAENTREGADOCUMENTOS")).sendKeys(date1);
+			
+			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_btGuardar")).click();
+			
+			
+			
+			/*driver.findElement(By.id("dnn_ctr396_CumplirManifiestoNew_btCumplirRemesa")).click();*/
+			
+			/*driver.findElement(By.id("dnn_ctr396_CumplirManifiestoNew_btNuevo")).click();*/
+			
+			
 			
 			
 		}
