@@ -32,6 +32,7 @@ public class Remesa {
 	By passwordLocator = By.id("dnn_ctr580_FormLogIn_edPassword"); 
 	
 	By ministerioLocator = By.xpath("//img[@src='/Portals/0/LogoMintransporte2014.jpg']");
+	By button = (By.id("tddnn_dnnSOLPARTMENU_ctldnnSOLPARTMENU119"));
 	
 	private readCsv dataRemesa;
 	
@@ -48,8 +49,6 @@ public class Remesa {
 	
 
 
-
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testAisPage () throws CsvValidationException, IOException, InterruptedException {
 		
@@ -135,37 +134,25 @@ public class Remesa {
 			driver.findElement(By.id("dnn_ctr396_CumplirRemesa_HORASALIDADESCARGUECUMPLIDO")).sendKeys(Keys.TAB);
 					
 			driver.findElement(By.id("dnn_ctr396_CumplirRemesa_btGuardar")).click();
-			driver.findElement(By.id("dnn_ctr396_CumplirRemesaNew_btNuevo")).click();
 			
-			driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS) ;
-			//MANIFIESTO
-
-			/*driver.findElement(By.id("dnn_ctr396_CumplirRemesaNew_btCumplirManifiesto")).click();
-			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_NUMMANIFIESTOCARGA")).sendKeys(NroManifiesto);
+			Thread.sleep(1000);
 			
+			WebElement popup = driver.findElement(By.id("dnn_ctr396_CumplirRemesaNew_btNuevo"));
 			
-			Select drpTipoCumplidoM = new Select(driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_NOMTIPOCUMPLIDOMANIFIESTO")));
-			drpTipoCumplidoM.selectByVisibleText("Cumplido Normal");
-			drpTipoCumplidoM.selectByIndex(1);
+			if(popup.getText().contains("Crear otro Cumplido de Remesa")) {
+				driver.findElement(By.id("dnn_ctr396_CumplirRemesaNew_btNuevo")).click();
+			}
 			
-			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_NOMTIPOCUMPLIDOMANIFIESTO")).sendKeys(Keys.TAB);
-			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_VALORADICIONALHORASCARGUE")).sendKeys(Keys.TAB);
-			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_VALORADICIONALHORASDESCARGUE")).sendKeys(Keys.TAB);
-			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_VALORADICIONALFLETE")).sendKeys(Keys.TAB);
-			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_VALORDESCUENTOFLETE")).sendKeys(Keys.TAB);
+			else
+				driver.switchTo().alert().accept();
+				Thread.sleep(1000);
+				
+				driver.findElement(button).click();
+				driver.findElement(By.id("tddnn_dnnSOLPARTMENU_ctldnnSOLPARTMENU120")).click();
+				
+			//driver.findElement(By.id("dnn_ctr396_CumplirRemesaNew_btNuevo")).click();
 			
-			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_FECHAENTREGADOCUMENTOS")).sendKeys(date1);
-			
-			driver.findElement(By.id("dnn_ctr396_CumplirManifiesto_btGuardar")).click();
-			
-			
-			
-			/*driver.findElement(By.id("dnn_ctr396_CumplirManifiestoNew_btCumplirRemesa")).click();*/
-			
-			/*driver.findElement(By.id("dnn_ctr396_CumplirManifiestoNew_btNuevo")).click();*/
-			
-			
-			
+										
 			
 		}
 			
